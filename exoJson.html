@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id="first">
+        <h1>Les supers héros</h1>
+        <ul></ul>
+    </div>
+    <script>
+        // let request = new XMLHttpRequest();
+        // request.open("post","http://localhost/exo.json");
+        // request.responseType = "json";
+
+
+        // request.onload = function (){
+        //     if (request.status != 200){
+        //         alert("erreur" + request.status + " : " + request.statusText)
+        //     }
+        //     else {
+        //         alert("Réponse :\n" + JSON.stringify(request.response))
+        //     }
+        // } ;
+
+        // request.onerror = function(){
+        //     alert("La réponse à échoué");
+        // }
+
+        // request.send();
+
+        // -------------------------------------------------------------------------------------------------------------------------------------
+
+        const URL = "http://localhost/exo.json";
+
+        let superHeroes;
+
+        let ajax = new Promise((resolve, reject) => {
+            let request = new XMLHttpRequest();
+            request.open("get", URL);
+            request.responseType = "json";
+            request.addEventListener("load", function () {
+                if (request.status === 200) {
+                    resolve(request.response)
+                } else {
+                    reject("Erreur du serveur : " + request.status)
+                }
+            }, false);
+
+            request.addEventListener("error", function () {
+                reject("La requête ajax à échoué");
+            }, false);
+
+            request.send();
+        })
+
+        ajax.then(function (response) {
+            superHeroes = response;
+            console.log("Réponse : %o", response)
+        })
+            .catch(msg => console.log("Message d'erreur:", msg));
+
+
+        let listContent = document.querySelector("#first ul");
+        let listHeroes;
+
+        for (let i = 0; i < superHeroes.members.length; i++) {
+            listHeroes = document.createElement("li");
+            listHeroes.innerText = superHeroes.members[i];
+            listContent = listContent.appendChild(listHeroes);
+        }
+
+
+
+
+        // --------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
