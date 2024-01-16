@@ -12,13 +12,13 @@
     <header>
 
     </header>
-    
-        <ul id="listHeroes"> </ul>
+
+    <ul id="listHeroes"> </ul>
 
 
     </section>
     <script>
-    
+
         // let request = new XMLHttpRequest();
         // request.open("post","http://localhost/exo.json");
         // request.responseType = "json";
@@ -53,28 +53,28 @@
         let ajax = new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
 
-        // méthode get + URL (const) pour allez cherché les infos
+            // méthode get + URL (const) pour allez cherché les infos
             request.open("get", URL);
-        // on récupére les info en format JSON
+            // on récupére les info en format JSON
             request.responseType = "json";
 
-        // On lance l'écoute pour lancer la fonction de chargement des infos
+            // On lance l'écoute pour lancer la fonction de chargement des infos
             request.addEventListener("load", function () {
-        // Si le code page est bon on recupére les infos sinon message d'erreur 
+                // Si le code page est bon on recupére les infos sinon message d'erreur 
                 if (request.status === 200) {
                     resolve(request.response)
                 } else {
                     reject("Erreur du serveur : " + request.status)
                 }
             }, false);
-        // On lance l'écoute pour le rejet de la requête
+            // On lance l'écoute pour le rejet de la requête
             request.addEventListener("error", function () {
                 reject("La requête ajax à échoué");
             }, false);
 
-        // On envoi la requête    
+            // On envoi la requête    
             request.send();
-        // Si tout c'est bien passé on apelle 2 nouvelles fonctions pour contenir et afficher nos infos sur l'index  
+            // Si tout c'est bien passé on apelle 2 nouvelles fonctions pour contenir et afficher nos infos sur l'index  
             request.onload = function () {
                 myTitle(superHeroes);
                 showHeroes(superHeroes);
@@ -102,15 +102,15 @@
         function showHeroes(jsonObj) {
             let heroes = jsonObj["members"];
 
-            for (let i = 0; i < heroes.length; i++){
+            for (let i = 0; i < heroes.length; i++) {
                 let listContent = document.createElement('li');
                 listContent.textContent = heroes[i].name;
                 listHeroes.appendChild(listContent)
             }
         }
-            
 
-        
+
+
 
 
 
