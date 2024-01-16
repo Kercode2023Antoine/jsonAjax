@@ -9,11 +9,16 @@
 </head>
 
 <body>
-    <div id="first">
-        <h1>Les supers héros</h1>
-        <ul></ul>
-    </div>
+    <header>
+
+    </header>
+    
+        <ul id="listHeroes"> </ul>
+
+
+    </section>
     <script>
+    
         // let request = new XMLHttpRequest();
         // request.open("post","http://localhost/exo.json");
         // request.responseType = "json";
@@ -36,44 +41,81 @@
 
         // -------------------------------------------------------------------------------------------------------------------------------------
 
-        const URL = "http://localhost/exo.json";
 
-        let superHeroes;
+        // on crée une constante pour l'url du .json.
+        const URL = "http://localhost/exoJsonAjax/exo.json";
 
+        // on crée les variables pour construire la page
+        let header = document.querySelector('header');
+        let listHeroes = document.getElementById('listHeroes');
+
+        // la promesse va nous permettre de recupérer les infos en JSON
         let ajax = new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
+
+        // méthode get + URL (const) pour allez cherché les infos
             request.open("get", URL);
+        // on récupére les info en format JSON
             request.responseType = "json";
+
+        // On lance l'écoute pour lancer la fonction de chargement des infos
             request.addEventListener("load", function () {
+        // Si le code page est bon on recupére les infos sinon message d'erreur 
                 if (request.status === 200) {
                     resolve(request.response)
                 } else {
                     reject("Erreur du serveur : " + request.status)
                 }
             }, false);
-
+        // On lance l'écoute pour le rejet de la requête
             request.addEventListener("error", function () {
                 reject("La requête ajax à échoué");
             }, false);
 
+        // On envoi la requête    
             request.send();
+        // Si tout c'est bien passé on apelle 2 nouvelles fonctions pour contenir et afficher nos infos sur l'index  
+            request.onload = function () {
+                myTitle(superHeroes);
+                showHeroes(superHeroes);
+            };
         })
-
+        // On termine la promesse avec les conséquences des resultat : then = tout est ok, catch = erreur !
         ajax.then(function (response) {
+
             superHeroes = response;
             console.log("Réponse : %o", response)
+
         })
             .catch(msg => console.log("Message d'erreur:", msg));
 
+        // création de la fonction pour créer le H1 de l'index !    
 
-        let listContent = document.querySelector("#first ul");
-        let listHeroes;
-
-        for (let i = 0; i < superHeroes.members.length; i++) {
-            listHeroes = document.createElement("li");
-            listHeroes.innerText = superHeroes.members[i];
-            listContent = listContent.appendChild(listHeroes);
+        function myTitle(jsonObj) {
+            let myH1 = document.createElement("h1");
+            myH1.textContent = jsonObj["squadName"];
+            header.appendChild(myH1);
         }
+
+        // création de la fonction pour remplir l'UL de l'index !
+
+        function showHeroes(jsonObj) {
+            let heroes = jsonObj["members"];
+
+            for (let i = 0; i < heroes.length; i++){
+                let listContent = document.createElement('li');
+                listContent.textContent = heroes[i].name;
+                listHeroes.appendChild(listContent)
+            }
+        }
+            
+
+        
+
+
+
+
+
 
 
 
